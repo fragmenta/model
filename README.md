@@ -1,2 +1,2 @@
-# model
-An option base model class and utilities
+# Package model
+An optional base model class and utilities
