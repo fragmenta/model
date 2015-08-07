@@ -10,7 +10,6 @@ import (
 
 // Model base class
 type Model struct {
-	// FIXME - are TableName and KeyName required?
 	TableName string
 	KeyName   string
 	Id        int64
@@ -32,28 +31,34 @@ func (m *Model) UrlPrefix() string {
 	return m.TableName
 }
 
+// UrlCreate returns the create url for this model /table/create
 func (m *Model) UrlCreate() string {
 	return fmt.Sprintf("/%s/%d/create", m.TableName, m.Id)
 }
 
+// UrlUpdate returns the update url for this model /table/id/update
 func (m *Model) UrlUpdate() string {
 	return fmt.Sprintf("/%s/%d/update", m.TableName, m.Id)
 }
 
+// UrlDestroy returns the destroy url for this model /table/id/destroy
 func (m *Model) UrlDestroy() string {
 	return fmt.Sprintf("/%s/%d/destroy", m.TableName, m.Id)
 }
 
-// This should use ToSlug to create a slug from name as well...
+// UrlShow returns the show url for this model /table/id
 func (m *Model) UrlShow() string {
 	return fmt.Sprintf("/%s/%d", m.TableName, m.Id)
 }
 
+// UrlIndex returns the index url for this model - /table
 func (m *Model) UrlIndex() string {
 	return fmt.Sprintf("/%s", m.TableName, m.Id)
 }
 
-// Convert a file name to something suitable for use on the web as part of a url
+// Does this belong in model.Url instead?  I think get rid of that and put useful stuff in here...
+
+// ToSlug converts our name to something suitable for use on the web as part of a url
 func ToSlug(name string) string {
 	// Lowercase
 	slug := strings.ToLower(name)
@@ -76,22 +81,22 @@ func ToSlug(name string) string {
 	return slug
 }
 
-// Return the table name for this object
+// Table returns the table name for this object
 func (m *Model) Table() string {
 	return m.TableName
 }
 
-// Use id for primary key by default - used by query
+// PrimaryKey returns the id for primary key by default - used by query
 func (m *Model) PrimaryKey() string {
 	return m.KeyName
 }
 
-// What name should we return for select options?
+// SelectName returns our name for select menus
 func (m *Model) SelectName() string {
 	return fmt.Sprintf("%s-%d", m.TableName, m.Id) // Usually override with name or a summary
 }
 
-// What value should we return for select options?
+// SelectValue returns our value for select options
 func (m *Model) SelectValue() string {
 	return fmt.Sprintf("%d", m.Id)
 }
@@ -105,6 +110,11 @@ func (m *Model) PrimaryKeyValue() int64 {
 func (m *Model) OwnedBy(uid int64) bool {
 	// In models composed with base model, you may want to check a user_id field or join table
 	// In this base model, we return false by default
+	return false
+}
+
+// Authorise returns true if the path and user are authorised
+func (m *Model) Authorise(s string, o int64) bool {
 	return false
 }
 
