@@ -26,6 +26,8 @@ func (m *Model) Init() {
 	m.UpdatedAt = time.Now()
 }
 
+// FIXME - rename these with URL instead of Url
+
 // UrlPrefix returns the url prefix for this model (normally the table name)
 func (m *Model) UrlPrefix() string {
 	return m.TableName
@@ -56,10 +58,8 @@ func (m *Model) UrlIndex() string {
 	return fmt.Sprintf("/%s", m.TableName, m.Id)
 }
 
-// Does this belong in model.Url instead?  I think get rid of that and put useful stuff in here...
-
 // ToSlug converts our name to something suitable for use on the web as part of a url
-func ToSlug(name string) string {
+func (m *Model) ToSlug(name string) string {
 	// Lowercase
 	slug := strings.ToLower(name)
 
