@@ -5,6 +5,7 @@ import (
 	"github.com/fragmenta/view/helpers"
 )
 
+// ModelStatus adds status to a model - this may in future be removed and moved into apps as it is frequently modified
 type ModelStatus struct {
 	Status int64
 }
@@ -21,22 +22,19 @@ const (
 	Featured    = 101
 )
 
-// Return an array of statuses for a status select
+// StatusOptions returns an array of statuses for a status select
 func (m *ModelStatus) StatusOptions() []helpers.Option {
-	options := make([]helpers.Option, 0)
+	var options []helpers.Option
 
-	options = append(options, helpers.Option{Draft, "Draft"})
-	options = append(options, helpers.Option{Final, "Final"})
-	options = append(options, helpers.Option{Suspended, "Suspended"})
-	options = append(options, helpers.Option{Published, "Published"})
-
-	// For now leave featured off default statuses
-	// options = append(options,helpers.Option{Featured,"Featured"})
+	options = append(options, helpers.Option{Id: Draft, Name: "Draft"})
+	options = append(options, helpers.Option{Id: Final, Name: "Final"})
+	options = append(options, helpers.Option{Id: Suspended, Name: "Suspended"})
+	options = append(options, helpers.Option{Id: Published, Name: "Published"})
 
 	return options
 }
 
-// Return the string representation of the model status
+// StatusDisplay returns a string representation of the model status
 func (m *ModelStatus) StatusDisplay() string {
 	for _, o := range m.StatusOptions() {
 		if o.Id == m.Status {
@@ -48,34 +46,33 @@ func (m *ModelStatus) StatusDisplay() string {
 
 // Model status
 
-// Is the status Draft?
-func (m *ModelStatus) Draft() bool {
+// IsDraft returns true if the status is Draft
+func (m *ModelStatus) IsDraft() bool {
 	return m.Status == Draft
 }
 
-// Is the status Final?
-func (m *ModelStatus) Final() bool {
+// IsFinal returns true if the status is Final
+func (m *ModelStatus) IsFinal() bool {
 	return m.Status == Final
 }
 
-// Is the status Suspended?
-func (m *ModelStatus) Suspended() bool {
+// IsSuspended returns true if the status is Suspended
+func (m *ModelStatus) IsSuspended() bool {
 	return m.Status == Suspended
 }
 
-// Is the status Unavailable?
-func (m *ModelStatus) Unavailable() bool {
+// IsUnavailable returns true if the status is unavailable
+func (m *ModelStatus) IsUnavailable() bool {
 	return m.Status == Unavailable
 }
 
-// Is the status Published?
-// Anything over Published status is Published
-func (m *ModelStatus) Published() bool {
+// IsPublished returns true if the status is published *or over*
+func (m *ModelStatus) IsPublished() bool {
 	return m.Status >= Published // NB >=
 }
 
-// Is the status Featured?
-func (m *ModelStatus) Featured() bool {
+// IsFeatured returns true if the status is featured
+func (m *ModelStatus) IsFeatured() bool {
 	return m.Status == Featured
 }
 
@@ -83,42 +80,42 @@ func (m *ModelStatus) Featured() bool {
 // Apply with query.Apply(status.WherePublished) etc
 // Or define on your own models instead...
 
-// Modify the given query to select status draft
+// WhereDraft modifies the given query to select status draft
 func WhereDraft(q *query.Query) *query.Query {
 	return q.Where("status = ?", Draft)
 }
 
-// Modify the given query to select status Final
+// WhereFinal modifies the given query to select status Final
 func WhereFinal(q *query.Query) *query.Query {
 	return q.Where("status = ?", Final)
 }
 
-// Modify the given query to select status Suspended
+// WhereSuspended modifies the given query to select status Suspended
 func WhereSuspended(q *query.Query) *query.Query {
 	return q.Where("status = ?", Suspended)
 }
 
-// Modify the given query to select status Featured
+// WhereFeatured modifies the given query to select status Featured
 func WhereFeatured(q *query.Query) *query.Query {
 	return q.Where("status = ?", Featured)
 }
 
-// Modify the given query to select status Published
+// WherePublished modifies the given query to select status Published
 func WherePublished(q *query.Query) *query.Query {
 	return q.Where("status >= ?", Published)
 }
 
-// Modify the given query to select records with null status
+// Null modifies the given query to select records with null status
 func Null(q *query.Query) *query.Query {
 	return q.Where("status IS NULL")
 }
 
-// Modify the given query to select records which do not have null status
+// NotNull modifies the given query to select records which do not have null status
 func NotNull(q *query.Query) *query.Query {
 	return q.Where("status IS NOT NULL")
 }
 
-// Modify the given query to order records by status
+// Order modifies the given query to order records by status
 func Order(q *query.Query) *query.Query {
 	return q.Order("status desc")
 }
