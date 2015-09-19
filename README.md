@@ -10,7 +10,9 @@ An optional base model class and utilities. The package includes some basic fiel
     	UpdatedAt time.Time
     }
 ```
- 
+
+### Usage 
+
 It can be included in models with:
 
 ```Go 
