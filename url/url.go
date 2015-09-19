@@ -1,4 +1,4 @@
-// FIXME - remove this package and all refs - now put into the base model
+// Package url is deprecated and will be removed soon.
 package url
 
 import (
@@ -6,6 +6,8 @@ import (
 	"regexp"
 	"strings"
 )
+
+// FIXME - remove this package - methods are now on the model object itself
 
 type Resource interface {
 	// The url prefix used for the resource (typically the same as the Table())
