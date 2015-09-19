@@ -26,8 +26,6 @@ func (m *Model) Init() {
 	m.UpdatedAt = time.Now()
 }
 
-// FIXME - rename these with URL instead of Url
-
 // UrlPrefix returns the url prefix for this model (normally the table name)
 func (m *Model) UrlPrefix() string {
 	return m.TableName
