@@ -10,50 +10,54 @@ import (
 
 // Model base class
 type Model struct {
-	TableName string
-	KeyName   string
-	Id        int64
+	// Id is the default primary key of the model
+	Id int64
+
+	// CreatedAt stores the creation time of the model and should not be changed after cretion
 	CreatedAt time.Time
+
+	// UpdatedAt stores the last update time of the model
 	UpdatedAt time.Time
+
+	// TableName is used for database queries and urls
+	TableName string
+
+	// KeyName is used for database queries as the primary key
+	KeyName string
 }
 
 // Init sets up the model fields
 func (m *Model) Init() {
-	m.TableName = ""
-	m.KeyName = "id"
 	m.Id = 0
 	m.CreatedAt = time.Now()
 	m.UpdatedAt = time.Now()
+	m.TableName = ""
+	m.KeyName = "id"
 }
 
-// UrlPrefix returns the url prefix for this model (normally the table name)
-func (m *Model) UrlPrefix() string {
-	return m.TableName
+// URLCreate returns the create url for this model /table/create
+func (m *Model) URLCreate() string {
+	return fmt.Sprintf("/%s/create", m.TableName)
 }
 
-// UrlCreate returns the create url for this model /table/create
-func (m *Model) UrlCreate() string {
-	return fmt.Sprintf("/%s/%d/create", m.TableName, m.Id)
-}
-
-// UrlUpdate returns the update url for this model /table/id/update
-func (m *Model) UrlUpdate() string {
+// URLUpdate returns the update url for this model /table/id/update
+func (m *Model) URLUpdate() string {
 	return fmt.Sprintf("/%s/%d/update", m.TableName, m.Id)
 }
 
-// UrlDestroy returns the destroy url for this model /table/id/destroy
-func (m *Model) UrlDestroy() string {
+// URLDestroy returns the destroy url for this model /table/id/destroy
+func (m *Model) URLDestroy() string {
 	return fmt.Sprintf("/%s/%d/destroy", m.TableName, m.Id)
 }
 
-// UrlShow returns the show url for this model /table/id
-func (m *Model) UrlShow() string {
+// URLShow returns the show url for this model /table/id
+func (m *Model) URLShow() string {
 	return fmt.Sprintf("/%s/%d", m.TableName, m.Id)
 }
 
-// UrlIndex returns the index url for this model - /table
-func (m *Model) UrlIndex() string {
-	return fmt.Sprintf("/%s", m.TableName, m.Id)
+// URLIndex returns the index url for this model - /table
+func (m *Model) URLIndex() string {
+	return fmt.Sprintf("/%s", m.TableName)
 }
 
 // ToSlug converts our name to something suitable for use on the web as part of a url
@@ -111,11 +115,6 @@ func (m *Model) OwnedBy(uid int64) bool {
 	return false
 }
 
-// Authorise returns true if the path and user are authorised
-func (m *Model) Authorise(s string, o int64) bool {
-	return false
-}
-
 // CacheKey generates a cache key for this model object, dependent on id and UpdatedAt
 // should we generate a hash of this to ensure we fit in small key size?
 func (m *Model) CacheKey() string {
@@ -126,4 +125,26 @@ func (m *Model) CacheKey() string {
 // String returns a string representation of the model
 func (m *Model) String() string {
 	return fmt.Sprintf("%s/%d", m.TableName, m.Id)
+}
+
+// CleanParams returns a params list cleaned of keys not in allowed list
+func CleanParams(params map[string]string, allowed []string) map[string]string {
+
+	for k := range params {
+		if !paramAllowed(k, allowed) {
+			delete(params, k)
+		}
+	}
+
+	return params
+}
+
+// paramAllowed returns true if the string is in this list
+func paramAllowed(p string, allowed []string) bool {
+	for _, v := range allowed {
+		if p == v {
+			return true
+		}
+	}
+	return false
 }

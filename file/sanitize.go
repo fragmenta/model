@@ -1,19 +1,16 @@
 package file
 
 import (
-
-    "strings"
-    "regexp"
-    "path"
-    "bytes"
+	"bytes"
+	"path"
+	"regexp"
+	"strings"
 )
-
-
 
 // Remove all other unrecognised characters apart from
 var illegalName = regexp.MustCompile(`[^[:alnum:]-.]`)
 
-// Name makes a string safe to use in a file name by first finding the path basename, then replacing non-ascii characters.
+// SanitizeName makes a string safe to use in a file name by first finding the path basename, then replacing non-ascii characters.
 func SanitizeName(s string) string {
 	// Start with lowercase string
 	fileName := strings.ToLower(s)
@@ -33,8 +30,7 @@ var (
 	dashes = regexp.MustCompile(`[\-]+`)
 )
 
-// cleanString replaces separators with - and removes characters listed in the regexp provided from string.
-// Accents, spaces, and all characters not in A-Za-z0-9 are replaced.
+// SanitizeString replaces separators with - and removes characters listed in the regexp provided from string. Accents, spaces, and all characters not in A-Za-z0-9 are replaced.
 func SanitizeString(s string, r *regexp.Regexp) string {
 
 	// Remove any trailing space to avoid ending on -
@@ -54,8 +50,6 @@ func SanitizeString(s string, r *regexp.Regexp) string {
 
 	return s
 }
-
-
 
 // A very limited list of transliterations to catch common european names translated to urls.
 // This set could be expanded with at least caps and many more characters.
@@ -133,7 +127,7 @@ var transliterations = map[rune]string{
 	'œ': "oe",
 }
 
-// Accents replaces a set of accented characters with ascii equivalents.
+// RemoveAccents replaces a set of accented characters with ascii equivalents.
 func RemoveAccents(s string) string {
 	// Replace some common accent characters
 	b := bytes.NewBufferString("")
