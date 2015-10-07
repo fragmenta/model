@@ -10,7 +10,12 @@ import (
 func Float(param interface{}) float64 {
 	var v float64
 	if param != nil {
-		v = param.(float64)
+		switch param.(type) {
+		case int64:
+			v = float64(param.(int64))
+		default:
+			v = param.(float64)
+		}
 	}
 	return v
 }
