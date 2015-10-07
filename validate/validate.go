@@ -3,6 +3,7 @@ package validate
 
 import (
 	"fmt"
+	"strconv"
 	"time"
 )
 
@@ -60,10 +61,26 @@ func Time(param interface{}) time.Time {
 func Length(param string, min int, max int) error {
 	length := len(param)
 	if min != -1 && length < min {
-		return fmt.Errorf("Length of string %s %d, expected > %d", param, length, min)
+		return fmt.Errorf("length of string %s %d, expected > %d", param, length, min)
 	}
 	if max != -1 && length > max {
-		return fmt.Errorf("Length of string %s %d, expected < %d", param, length, max)
+		return fmt.Errorf("length of string %s %d, expected < %d", param, length, max)
+	}
+	return nil
+}
+
+// Within returns true if the param is an int with value between min and max inclusive
+// Set min or max to -1 to ignore
+func Within(param string, min float64, max float64) error {
+	f, err := strconv.ParseFloat(param, 64)
+	if err != nil {
+		return fmt.Errorf("invalid float param %s", param)
+	}
+	if f < min {
+		return fmt.Errorf("%0.2f is less than minimum %0.2f", f, min)
+	}
+	if f > max {
+		return fmt.Errorf("%0.2f is more than maximum %0.2f", f, max)
 	}
 	return nil
 }
