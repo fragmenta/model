@@ -128,6 +128,7 @@ func (m *Model) String() string {
 }
 
 // CleanParams returns a params list cleaned of keys not in allowed list
+// DEPRECATED - REMOVE AND REPLACE WITH params.Clean()
 func CleanParams(params map[string]string, allowed []string) map[string]string {
 
 	for k := range params {
