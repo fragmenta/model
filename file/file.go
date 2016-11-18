@@ -34,7 +34,7 @@ func CreatePathTo(s string) error {
 	s = filepath.Dir(s)
 	s = filepath.Clean(s)
 
-	fmt.Printf("Creating dirs to path %s\n", s)
+	//	fmt.Printf("Creating dirs to path %s\n", s)
 
 	// Create all directories up to path
 	return os.MkdirAll(s, 0774)

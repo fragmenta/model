@@ -41,7 +41,7 @@ func SaveJpegRepresentations(r io.Reader, options []Options) error {
 	// For each option, save a file
 	for _, o := range options {
 
-		fmt.Printf("Saving image file - %v\n", o)
+		//fmt.Printf("Saving image file - %v\n", o)
 
 		// Resize this image given the params - this is always in proportion, NEVER stretched
 		// If Square is true we crop to a square
