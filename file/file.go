@@ -23,7 +23,7 @@ func Save(r io.Reader, path string) error {
 
 }
 
-// Given a file path, create all directories enclosing this file path (which may not yet exist)
+// CreatePathTo creates all directories enclosing this file path (which may not yet exist)
 func CreatePathTo(s string) error {
 
 	if len(s) == 0 {
@@ -38,4 +38,11 @@ func CreatePathTo(s string) error {
 
 	// Create all directories up to path
 	return os.MkdirAll(s, 0774)
+}
+
+// Exists returns true if this file exists and can be accessed
+// for more complex requirements use os.Stat, this is a shortcut
+func Exists(p string) bool {
+	_, err := os.Stat(p)
+	return (err == nil) // only return true if no error
 }
