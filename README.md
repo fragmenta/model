@@ -1,27 +1,2 @@
 # Package model
-An optional base model class and utilities. The package includes some basic fields and methods acting on those fields. The fields included are:
-
-```Go 
-    type Model struct {
-    	TableName string
-    	KeyName   string
-    	Id        int64
-    	CreatedAt time.Time
-    	UpdatedAt time.Time
-    }
-```
-
-### Usage 
-
-It can be included in models with:
-
-```Go 
-type MyModel struct {
-    model.Model
-    ...
-```
-
-Utility subpackages are:
-
-* file - utilities for handling files
-* validate - utilities for validating field values
+This was an early sketch of helper utilities for resources. I've since decided that this code is best included within the apps, as a shared resources package, so you should consider this package and those under it deprecated. It will be removed in version 2.0.
