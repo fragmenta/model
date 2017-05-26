@@ -34,7 +34,14 @@ func Boolean(param interface{}) bool {
 func Int(param interface{}) int64 {
 	var v int64
 	if param != nil {
-		v = param.(int64)
+		switch param.(type) {
+		case float64:
+			v = int64(param.(float64))
+		case int:
+			v = int64(param.(int))
+		default:
+			v = param.(int64)
+		}
 	}
 	return v
 }
