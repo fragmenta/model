@@ -115,6 +115,11 @@ func (m *Model) OwnedBy(uid int64) bool {
 	return false
 }
 
+// ResourceID returns a key unique to this resource (we use table).
+func (m *Model) ResourceID() string {
+	return m.TableName
+}
+
 // CacheKey generates a cache key for this model object, dependent on id and UpdatedAt
 // should we generate a hash of this to ensure we fit in small key size?
 func (m *Model) CacheKey() string {
