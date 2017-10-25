@@ -59,7 +59,18 @@ func String(param interface{}) string {
 func Time(param interface{}) time.Time {
 	var v time.Time
 	if param != nil {
-		v = param.(time.Time)
+		switch param.(type) {
+		case time.Time:
+			v = param.(time.Time)
+		case string:
+			// Attempt to parse the time in RFC3339 format
+			d, err := time.Parse(time.RFC3339, param.(string))
+			if err != nil {
+				return v // return zero time on failure
+			}
+			v = d
+		}
+
 	}
 	return v
 }
