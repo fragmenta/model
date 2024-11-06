@@ -65,6 +65,12 @@ func (m *Model) ToSlug(name string) string {
 	// Lowercase
 	slug := strings.ToLower(name)
 
+	// Trim spaces
+	slug = strings.Trim(slug, " ")
+
+	// Remove instances of  - "
+	slug = strings.Replace(slug, " - ", " ", -1)
+
 	// Replace _ with - for consistent style
 	slug = strings.Replace(slug, "_", "-", -1)
 	slug = strings.Replace(slug, " ", "-", -1)
